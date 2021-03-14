@@ -1909,12 +1909,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       products: {},
-      search: ''
+      search: '',
+      searchType: ''
     };
   },
   created: function created() {
@@ -1957,7 +1962,15 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/api/products?q=' + this.search).then(function (response) {
         _this5.products = response.data.unit;
       });
-    })
+    }),
+    onChange: function onChange(event) {
+      var _this6 = this;
+
+      //console.log(event.target.value)
+      axios.get('/api/products?type=' + event.target.value + '&q=' + this.search).then(function (response) {
+        _this6.products = response.data.unit;
+      });
+    }
   }
 });
 
@@ -2048,6 +2061,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
 //
 //
 //
@@ -38609,6 +38623,46 @@ var render = function() {
     }),
     _vm._v(" "),
     _c(
+      "select",
+      {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.searchType,
+            expression: "searchType"
+          }
+        ],
+        attrs: { name: "searchType" },
+        on: {
+          change: [
+            function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.searchType = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            },
+            function($event) {
+              return _vm.onChange($event)
+            }
+          ]
+        }
+      },
+      [
+        _c("option", { attrs: { value: "name" } }, [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "detail" } }, [_vm._v("Detail")])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
       "table",
       { staticClass: "table" },
       [
@@ -38892,8 +38946,15 @@ var render = function() {
               "button",
               { staticClass: "btn btn-primary", attrs: { type: "submit" } },
               [_vm._v("Update")]
+            ),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              { staticClass: "btn btn-primary", attrs: { to: "/" } },
+              [_vm._v("Back")]
             )
-          ]
+          ],
+          1
         )
       ])
     ])

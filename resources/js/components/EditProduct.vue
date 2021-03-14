@@ -13,6 +13,7 @@
                         <input type="text" class="form-control" v-model="product.detail">
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
+					<router-link to="/" class="btn btn-primary">Back</router-link>
                 </form>
             </div>
         </div>

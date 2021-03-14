@@ -14,9 +14,16 @@ class ProductController extends Controller
 		//return $request->ajax() ? Product::paginate(2) : abort(404);		
 		
 		$key = \Request::get('q');
+		$type = \Request::get('type');
 		
 		if (!empty($key)) {
-			$unit = Product::where('name','LIKE',"%{$key}%")->paginate(2);	
+			
+			if (!empty($type)) { 
+				$unit = Product::where($type,'LIKE',"%{$key}%")->paginate(2);	
+			} else {
+				$unit = Product::where('name','LIKE',"%{$key}%")->paginate(2);	
+			}
+			
 			
 			return response()->json([ 'unit' => $unit ],Response::HTTP_OK);
 			

@@ -2,6 +2,10 @@
     <div>
         <h2 class="text-center">Products List</h2>
 		<input type="text" @keyup="searchUnit" placeholder="Search" v-model="search" class="form-control form-control-sm">
+		<select name="searchType" @change="onChange($event)" v-model="searchType">
+			<option value='name'>Name</option>
+			<option value='detail'>Detail</option>
+		</select>
 		<table class="table">
             <thead>
             <tr>
@@ -39,6 +43,7 @@
             return {
                 products: {},
 				search: '',
+				searchType: '',
             }
         },
         created() {
@@ -73,6 +78,14 @@
 					this.products = response.data.unit
 				})
 			}),
+			onChange(event) {
+				//console.log(event.target.value)
+				axios.get('/api/products?type='+event.target.value+'&q='+this.search)
+					.then((response)=>{
+					
+					this.products = response.data.unit
+				})
+			}
         }
     }
 </script>
