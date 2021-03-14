@@ -17,6 +17,11 @@ import VueRouter from 'vue-router';
 import axios from 'axios';
 import { routes } from './routes';
 
+import { Form, HasError, AlertError } from 'vform';
+
+import Swal from 'sweetalert2';
+window.Swal = Swal
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -28,6 +33,11 @@ Vue.use(VueAxios, axios);
 
 
 Vue.component('pagination', require('laravel-vue-pagination')); 
+
+
+//Import v-from
+
+window.Form = Form;
 
 const router = new VueRouter({
     mode: 'history',

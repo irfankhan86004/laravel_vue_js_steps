@@ -25,12 +25,13 @@ class ProductController extends Controller
 			}
 			
 			
-			return response()->json([ 'unit' => $unit ],Response::HTTP_OK);
+			//return response()->json([ 'unit' => $unit ],Response::HTTP_OK);
 			
 		} else {
 			$unit = Product::paginate(2);
 		}
         
+		//return response()->json([ 'unit' => $unit ],Response::HTTP_OK);
 		return $unit;
 		
     	
