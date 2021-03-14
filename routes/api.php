@@ -23,3 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('api')->group(function () {
     Route::resource('products', ProductController::class);
 });
+
+
+Route::get('/search_unit', '\App\Http\Controllers\ProductController@search_unit_by_key');

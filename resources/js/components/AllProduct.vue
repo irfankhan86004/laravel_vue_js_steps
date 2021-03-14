@@ -1,8 +1,8 @@
 <template>
     <div>
         <h2 class="text-center">Products List</h2>
- 
-        <table class="table">
+		<input type="text" @keyup="searchUnit" placeholder="Search" v-model="search" class="form-control form-control-sm">
+		<table class="table">
             <thead>
             <tr>
                 <th>ID</th>
@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="product in products" :key="product.id">
+            <tr v-for="product in products.data" :key="product.id">
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.detail }}</td>
@@ -25,15 +25,20 @@
                 </td>
             </tr>
             </tbody>
+			<pagination :data="products" @pagination-change-page="getResults"></pagination>
         </table>
     </div>
 </template>
  
 <script>
+	
+	import _ from "lodash";
+	
     export default {
         data() {
             return {
-                products: []
+                products: {},
+				search: '',
             }
         },
         created() {
@@ -44,6 +49,15 @@
                 });
         },
         methods: {
+			fetchingAllUnit() {
+			  axios.get("api/products").then( data => (this.products = data.data));
+			},
+			getResults(page = 1) {
+				  axios.get('api/products?page=' + page+'&q='+this.search)
+					.then(response => {
+					  this.products = response.data.unit;
+				  });
+			},
             deleteProduct(id) { 
                 this.axios
                     .delete(`http://localhost:8000/api/products/${id}`)
@@ -51,7 +65,14 @@
                         let i = this.products.map(data => data.id).indexOf(id);
                         this.products.splice(i, 1)
                     });
-            }
+            },
+			searchUnit:_.debounce(function(){
+				axios.get('/api/products?q='+this.search)
+					.then((response)=>{
+					
+					this.products = response.data.unit
+				})
+			}),
         }
     }
 </script>
